@@ -1,0 +1,121 @@
+@extends('layouts.myLayout')
+
+@section('content')
+   <div class="d-flex justify-content-center align-items-center vh-100">
+                        <div class="col-lg-9 col-md-9">
+                            <div class="ibox-title">
+                                <h5>Editar Repartidor</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+
+                                <form action="{{ route('repartidores.update',$repartidor->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="form-group row"><label class="col-lg-1 col-form-label">Nombre:* </label>
+
+                                        <div class="col-lg-10">
+                                             <input type="text" placeholder="Nombre" name="nombre"
+                                                class="form-control"value="{{ old('nombre',$repartidor->nombre) }}"> 
+                                        </div>
+                                    </div>
+                                    @error('nombre')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                    @enderror
+
+                                    <div class="form-group row"><label class="col-lg-1 col-form-label">Apellidos:* </label>
+
+                                        <div class="col-lg-10">
+                                             <input type="text" placeholder="Apellidos" name="apellidos"
+                                                class="form-control"value="{{ old('apellidos',$repartidor->apellidos) }}"> 
+                                        </div>
+                                    </div>
+                                    @error('apellidos')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                    @enderror
+
+                                    <div class="form-group row"><label class="col-lg-1 col-form-label">Salario:* </label>
+
+                                        <div class="col-lg-10">
+                                            <input type="text" placeholder="Salario" name="salario"
+                                                class="form-control"value="{{ old('salario',$repartidor->salario) }}"> 
+                                        </div>
+                                    </div>
+                                    @error('salario')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                    @enderror
+
+                                    <div class="form-group row"><label class="col-lg-1 col-form-label">Teléfono:* </label>
+
+                                        <div class="col-lg-10">
+                                             <input type="number" placeholder="Telefono" name="telefono"
+                                                class="form-control"value="{{ old('telefono',$repartidor->telefono) }}"> 
+                                        </div>
+                                    </div>
+                                    @error('telefono')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                    @enderror
+
+                                    <div class="form-group row"><label class="col-lg-1 col-form-label">Placa:* </label>
+
+                                        <div class="col-lg-10">
+                                             <input type="text" placeholder="Placa" name="placa"
+                                                class="form-control"value="{{ old('placa',$repartidor->placa) }}"> 
+                                        </div>
+                                    </div>
+                                    @error('placa')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                    @enderror
+
+                                    <div class="form-group row"><label class="col-lg-2 col-form-label">Tipo Vehiculo:* </label>
+
+                                        <div class="col-lg-9">
+                                            <input type="text" placeholder="Tipo de Vehiculo" name="tipo_vehiculo"
+                                                class="form-control"value="{{ old('tipo_vehiculo',$repartidor->tipo_vehiculo) }}"> 
+                                        </div>
+                                    </div>
+                                    @error('tipo_vehiculo')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                    @enderror
+
+                                    <div class=" d-flex justify-content-end pr-5 pt-3">
+                                            <div class="p-2">
+                                                <button class="btn btn-sm btn-success" type="submit">Guardar</button>
+                                            </div>
+                                            
+                                            <div class="p-2">
+                                            <a href="{{ route('repartidores.index') }}" class="btn btn-sm btn-secondary ">Cancelar</a>
+                                            </div>
+                                            
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+<script>
+
+    // Espera 5 segundos y luego oculta los mensajes de error
+    setTimeout(() => {
+        document.querySelectorAll('.text-danger').forEach(el => {
+            el.style.transition = 'opacity 0.5s ease';
+            el.style.opacity = '0';
+            setTimeout(() => el.remove(), 500); // elimina del DOM
+        });
+    }, 5000);
+</script>
+@endsection
+
+
+
+
+
+
+

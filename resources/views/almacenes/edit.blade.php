@@ -1,0 +1,78 @@
+@extends('layouts.myLayout')
+
+@section('content')
+   <div class="d-flex justify-content-center align-items-center vh-100">
+                        <div class="col-lg-9 col-md-9">
+                            <div class="ibox-title">
+                                <h5>Editar Almacén</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+
+                                <form action="{{ route('almacenes.update', $almacen->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="form-group row"><label class="col-lg-1 col-form-label">Nombre:* </label>
+
+                                        <div class="col-lg-10">
+                                            <input type="text" value="{{ old('nombre', $almacen->nombre)}}" placeholder="Nombre" name="nombre"
+                                                class="form-control"> 
+                                        </div>
+                                    </div>
+                                     @error('nombre')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                    @enderror
+                                    <div class="form-group row"><label class="col-lg-1 col-form-label">Ubicación: </label>
+
+                                        <div class="col-lg-10">
+                                            <input value="{{ old('ubicacion', $almacen->ubicacion)}}" placeholder="Ubicación" name="ubicacion"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                     @error('ubicacion')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                    @enderror
+                                    <div class="form-group row"><label class="col-lg-1 col-form-label">Capacidad: </label>
+
+                                        <div class="col-lg-10">
+                                            <input type="number" value="{{ old('capacidad', $almacen->capacidad)}}" placeholder="Capacidad en Kilo" name="capacidad"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                     @error('capacidad')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                    @enderror
+                                    <div class=" d-flex justify-content-end pr-5 pt-3">
+                                            <div class="p-2">
+                                                <button class="btn btn-sm btn-success" type="submit">Actualizar</button>
+                                            </div>
+                                            
+                                            <div class="p-2">
+                                            <a href="{{ route('almacenes.index') }}" class="btn btn-sm btn-secondary ">Cancelar</a>
+                                            </div>
+                                            
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+<script>
+
+    // Espera 5 segundos y luego oculta los mensajes de error
+    setTimeout(() => {
+        document.querySelectorAll('.text-danger').forEach(el => {
+            el.style.transition = 'opacity 0.5s ease';
+            el.style.opacity = '0';
+            setTimeout(() => el.remove(), 500); // elimina del DOM
+        });
+    }, 5000);
+</script>
+@endsection
