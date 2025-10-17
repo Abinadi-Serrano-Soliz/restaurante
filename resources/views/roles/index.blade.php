@@ -16,8 +16,10 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox ">
-                    <div class="ibox-title">                 
-                        <a href="{{ route('roles.create') }}" class="btn btn-success">Nuevo Rol</a>
+                    <div class="ibox-title">      
+                        @can('roles.crear')           
+                           <a href="{{ route('roles.create') }}" class="btn btn-success">Nuevo Rol</a>
+                        @endcan
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -46,16 +48,20 @@
                                                 @csrf
                                                 @method('delete')
                                                 <td>
-                                                    <a class="btn btn-warning btn-sm"
-                                                        href="{{ route('roles.permisos', $role->id) }}"><i
-                                                            class="fa-solid fa-key"></i></a>
-
-                                                    <a class="btn btn-info btn-sm"
-                                                        href="{{ route('roles.edit', $role->id) }}"><i
-                                                            class="fa-solid fa-pen-to-square"></i></a>
-
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i
-                                                            class="fa-solid fa-trash"></i></button>
+                                                    @can('roles.permisos.asignar')
+                                                        <a class="btn btn-warning btn-sm"
+                                                            href="{{ route('roles.permisos', $role->id) }}"><i
+                                                                class="fa-solid fa-key"></i></a>
+                                                    @endcan
+                                                    @can('roles.editar')
+                                                        <a class="btn btn-info btn-sm"
+                                                            href="{{ route('roles.edit', $role->id) }}"><i
+                                                                class="fa-solid fa-pen-to-square"></i></a>
+                                                    @endcan
+                                                    @can('roles.eliminar')
+                                                        <button type="submit" class="btn btn-danger btn-sm"><i
+                                                                class="fa-solid fa-trash"></i></button>
+                                                    @endcan
                                                 </td>
                                             </form>
                                     </tr>

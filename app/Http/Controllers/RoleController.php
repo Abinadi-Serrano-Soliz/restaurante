@@ -10,11 +10,15 @@ use Illuminate\Routing\Controllers\Middleware;
 
 class RoleController extends Controller implements HasMiddleware
 {
-     public static function middleware(): array
+    public static function middleware(): array
     {
         return [
             'auth',
-            new Middleware('permission:roles.ver', only: ['index']),
+            new Middleware('permission:roles.listar', only: ['index']),
+            new Middleware('permission:roles.crear', only: ['create', 'store']),
+            new Middleware('permission:roles.permisos.asignar', only: ['permisos', 'asignarPermisos']),
+            new Middleware('permission:roles.editar', only: ['edit', 'update']),
+            new Middleware('permission:roles.eliminar', only: ['destroy']),
         ];
     }
 

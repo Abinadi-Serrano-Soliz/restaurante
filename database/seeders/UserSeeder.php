@@ -18,13 +18,13 @@ class UserSeeder extends Seeder
 
         $usuario=User::create([
             'ci' => '9637311',
-            'name'   => 'Administrador',
-            'lastname' => 'Administrador',
+            'name'   => 'Abinadi',
+            'lastname' => 'Serrano Soliz',
             'cargo' => 'Administrador',
             'fecha_contratacion' => '2025-05-05',
             'salario' => '3500.00',
             'telefono' => '63408393',
-            'email'    => 'admin@demo.com',
+            'email'    => 'siquensito@gmail.com',
             'password' => Hash::make('12345678'), // siempre encriptada
         ]);
 

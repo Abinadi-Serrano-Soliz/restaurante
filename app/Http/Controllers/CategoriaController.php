@@ -7,15 +7,15 @@ use App\Models\Categoria;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class CategoriaController extends Controller
+class CategoriaController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
         return [
             'auth',
-            new Middleware('permission:categorias.ver', only: ['index', 'show']),
+            new Middleware('permission:categorias.listar', only: ['index']),
             new Middleware('permission:categorias.crear', only: ['create', 'store']),
-            new Middleware('permission:categorias.actualizar', only: ['edit', 'update']),
+            new Middleware('permission:categorias.editar', only: ['edit', 'update']),
             new Middleware('permission:categorias.eliminar', only: ['destroy']),
         ];
     }

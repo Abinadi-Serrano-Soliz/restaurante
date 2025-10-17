@@ -4,17 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Almacene;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class AlmacenController extends Controller
+class AlmacenController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
         return [
             'auth',
-            new Middleware('permission:almacenes.ver', only: ['index', 'show']),
+            new Middleware('permission:almacenes.listar', only: ['index']),
             new Middleware('permission:almacenes.crear', only: ['create', 'store']),
-            new Middleware('permission:almacenes.actualizar', only: ['edit', 'update']),
+            new Middleware('permission:almacenes.editar', only: ['edit', 'update']),
             new Middleware('permission:almacenes.eliminar', only: ['destroy']),
         ];
     }

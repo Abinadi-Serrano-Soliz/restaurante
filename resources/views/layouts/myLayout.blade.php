@@ -59,48 +59,46 @@
                                     de
                                     Control</span> </a>
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-bus"></i><span
-                                    class="nav-label">Autobuses</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-map-marker"></i><span
-                                    class="nav-label">Destinos</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('menus.index') }}"><i class="fa fa-road"></i><span
-                                    class="nav-label">Menú</span>
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a href="{{ route('repartidores.index') }}"><i class="fa fa-users"></i><span
-                                    class="nav-label">Repartidores</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('clientes.index') }}"><i class="fa fa-users"></i><span
-                                    class="nav-label">Clientes</span>
-                            </a>
-                        </li>
-                       
+                        @can('menu.listar')
+                            <li>
+                                <a href="{{ route('menus.index') }}"><i class="fa fa-road"></i><span
+                                        class="nav-label">Menú</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('repartidores.listar')
+                            <li>
+                                <a href="{{ route('repartidores.index') }}"><i class="fa fa-users"></i><span
+                                        class="nav-label">Repartidores</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('clientes.listar')
+                            <li>
+                                <a href="{{ route('clientes.index') }}"><i class="fa fa-users"></i><span
+                                        class="nav-label">Clientes</span>
+                                </a>
+                            </li>
+                        @endcan
 
                          <li>
                             <a href="#"><i class="fa fa-solid fa-cart-shopping"></i> <span class="nav-label">Modulo de Compra</span><span
                                     class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
+                                @can('compras.listar')
                                  <li>
                                     <a href="{{ route('compras.index') }}"><i class="fa fa-solid fa-cart-shopping"></i><span
                                             class="nav-label">Compras</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="{{ route('proveedores.index') }}"><i class="fa fa-solid fa-people-group"></i><span
-                                            class="nav-label">Proveedores</span>
-                                    </a>
-                                </li>
+                                @endcan
+                                @can('proveedores.listar')
+                                    <li>
+                                        <a href="{{ route('proveedores.index') }}"><i class="fa fa-solid fa-people-group"></i><span
+                                                class="nav-label">Proveedores</span>
+                                        </a>
+                                    </li>
+                                @endcan
                             </ul>
                         </li>
                         
@@ -108,21 +106,27 @@
                             <a href="#"><i class="fa fa-solid fa-warehouse"></i> <span class="nav-label">Modulo de Almacén</span><span
                                     class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
+                                @can('productos.listar')
                                 <li>
                                     <a href="{{ route('productos.index') }}"><i class="fa fa-ticket"></i>
                                             Productos
                                     </a>
-                                <li>
-                                <li>
-                                    <a href="{{ route('almacenes.index') }}"><i class="fas fa-warehouse"></i>
-                                           Almacenes
-                                    </a>
                                 </li>
-                                <li>
-                                    <a href="{{ route('categorias.index') }}"><i class="fa-solid fa-layer-group"></i>
-                                            Categorias
-                                    </a>
-                                </li>
+                                @endcan
+                                @can('categorias.listar')
+                                    <li>
+                                        <a href="{{ route('almacenes.index') }}"><i class="fas fa-warehouse"></i>
+                                            Almacenes
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('categorias.listar')
+                                    <li>
+                                        <a href="{{ route('categorias.index') }}"><i class="fa-solid fa-layer-group"></i>
+                                                Categorias
+                                        </a>
+                                    </li>
+                                @endcan
                             </ul>
                         </li>
                    
@@ -130,11 +134,13 @@
                             <a href="#"><i class="fa fa-lock"></i> <span class="nav-label">Modulo de Usuario</span><span
                                     class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
-                                
-                                <li><a href="{{route('roles.index')}}">Roles</a></li>
-                                
-                                <li><a href="{{route('users.index')}}"><i class="fa fa-solid fa-users"></i>Usuarios</a></li>
-                                <li><a href="{{route('users.empleados')}}"><i class="fa fa-solid fa-user-tie"></i>Empleados</a></li>
+                                @can('roles.listar')
+                                     <li><a href="{{route('roles.index')}}">Roles y Permisos</a></li>
+                                @endcan
+                                @can('usuarios.listar')
+                                    <li><a href="{{route('users.index')}}"><i class="fa fa-solid fa-users"></i>Usuarios</a></li>
+                                    <li><a href="{{route('users.empleados')}}"><i class="fa fa-solid fa-user-tie"></i>Empleados</a></li>
+                                @endcan
                             </ul>
                         </li>
                        

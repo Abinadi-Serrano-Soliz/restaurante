@@ -17,7 +17,7 @@
         <div class="col-lg-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    @can('usuarios.crear')
+                    @can('compras.crear')
                     <a href="{{ route('compras.create') }}" class="btn btn-success">Nueva Compra</a>
                     @endcan
 
@@ -75,21 +75,23 @@
                                         @csrf
                                         @method('delete')
                                         <td class="text-center">
-                                            <a class="btn btn-warning btn-sm" 
-                                            href="{{ route('compras.show', $compra->id) }}">
-                                            <i class="fa fa-eye"></i>
-                                            </a>
-                                            @can('usuarios.actualizar')
-                                            <a class="btn btn-info btn-sm" 
-                                               href="{{ route('compras.edit', $compra->id) }}">
-                                               <i class="fa-solid fa-pen-to-square"></i>
-                                            </a>
+                                            @can('compras.eliminar')
+                                                <a class="btn btn-warning btn-sm" 
+                                                href="{{ route('compras.show', $compra->id) }}">
+                                                <i class="fa fa-eye"></i>
+                                                </a>
+                                            @endcan
+                                            @can('compras.editar')
+                                                <a class="btn btn-info btn-sm" 
+                                                href="{{ route('compras.edit', $compra->id) }}">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                                </a>
                                             @endcan
 
-                                            @can('usuarios.eliminar')
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
+                                            @can('compras.eliminar')
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
                                             @endcan
                                         </td>
                                     </form>

@@ -14,7 +14,7 @@
 
                 {{-- Nombre --}}
                 <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Nombre del menú:</label>
+                    <label class="col-lg-3 col-form-label">Nombre del menú:*</label>
                     <div class="col-lg-9">
                         <input type="text" name="nombre" value="{{ old('nombre', $menu->nombre) }}" class="form-control" required>
                     </div>
@@ -52,7 +52,7 @@
 
                 {{-- Precio --}}
                 <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Precio:</label>
+                    <label class="col-lg-3 col-form-label">Precio:*</label>
                     <div class="col-lg-9">
                         <input type="number" name="precio" step="0.01" class="form-control" value="{{ old('precio', $menu->precio) }}" required>
                     </div>
@@ -63,7 +63,7 @@
 
                 {{-- Stock --}}
                 <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Stock Menú:</label>
+                    <label class="col-lg-3 col-form-label">Stock Menú:*</label>
                     <div class="col-lg-9">
                         <input type="number" name="stock_menu" class="form-control" value="{{ old('stock_menu', $menu->stock_menu) }}">
                     </div>
@@ -120,8 +120,11 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Cantidad(Kg):</label>
-                                    <input type="number" step="0.01" name="productos[{{ $index }}][cantidad]" class="form-control" value="{{ $p->pivot->cantidad }}" min="0" required>
+                                    <label>Cantidad {{ $p->unidad_medida}} :</label>
+                                    <input type="text" step="0.01" name="productos[{{ $index }}][cantidad]" class="form-control" value="{{ $p->pivot->cantidad }} " min="0" required>
+                                   @if ($errors->has('productos.'.$index.'.cantidad'))
+                                        <small class="text-danger d-block mt-1">{{ $errors->first('productos.'.$index.'.cantidad') }}</small>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -167,12 +170,17 @@
                 <div class="col-md-6">
                     <label>Cantidad(Kg/Li):</label>
                     <input type="number" step="0.01" name="productos[${contador}][cantidad]" class="form-control" min="0" required>
+                
                 </div>
             </div>
         `;
         container.appendChild(div);
         contador++;
-
+            $(div).find('.select-producto').select2({
+            width: '100%',
+            placeholder: '-- Seleccione un producto --',
+            allowClear: true
+        });
     });
 
     setTimeout(() => {

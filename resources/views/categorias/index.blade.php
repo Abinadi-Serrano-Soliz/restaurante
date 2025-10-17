@@ -16,7 +16,7 @@
             <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        @can('usuarios.crear')
+                        @can('categorias.crear')
                         <a href="{{ route('categorias.create') }}" class="btn btn-success">Nueva Categoria</a>
                         @endcan
                         <div class="ibox-tools">
@@ -51,12 +51,12 @@
                                                 @csrf
                                                 @method('delete')
                                                 <td>
-                                                    @can('usuarios.actualizar')
+                                                    @can('categorias.editar')
                                                     <a class="btn btn-info btn-sm"
                                                         href="{{ route('categorias.edit', $categoria->id) }}"><i
                                                             class=" fa-solid fa-pen-to-square"></i></a>
                                                     @endcan
-                                                    @can('usuarios.eliminar')
+                                                    @can('categorias.eliminar')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i
                                                             class="fa-solid fa-trash"></i></button>
                                                     @endcan

@@ -6,9 +6,21 @@ use App\Models\Almacene;
 use App\Models\Categoria;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ProductoController extends Controller
+class ProductoController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+            new Middleware('permission:productos.listar', only: ['index']),
+            new Middleware('permission:productos.crear', only: ['create', 'store']),
+            new Middleware('permission:productos.editar', only: ['edit', 'update']),
+            new Middleware('permission:productos.eliminar', only: ['destroy']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */

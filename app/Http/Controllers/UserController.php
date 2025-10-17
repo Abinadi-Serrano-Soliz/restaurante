@@ -16,9 +16,10 @@ class UserController extends Controller implements HasMiddleware
     {
         return [
             'auth',
-            new Middleware('permission:usuarios.ver', only: ['index']),
+            new Middleware('permission:usuarios.listar', only: ['index','empleados']),
+            new Middleware('permission:usuarios.ver', only: ['show']),
             new Middleware('permission:usuarios.crear', only: ['create', 'store']),
-            new Middleware('permission:usuarios.actualizar', only: ['edit', 'update']),
+            new Middleware('permission:usuarios.editar', only: ['edit', 'update']),
             new Middleware('permission:usuarios.eliminar', only: ['destroy']),
         ];
     }
@@ -80,6 +81,7 @@ class UserController extends Controller implements HasMiddleware
 
     public function edit(User $user, Request $request)
     {
+        
         $roles = Role::all();
         return view('users.edit', compact('user', 'roles'));
     }
@@ -153,5 +155,10 @@ class UserController extends Controller implements HasMiddleware
         return view('users.empleados', compact('empleados'));
     }
 
+    public function show(User $user)
+    {
+        $user->load('roles'); // Cargamos los roles asociados
+        return view('users.show', compact('user'));
+    }
 
 }

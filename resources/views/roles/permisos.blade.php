@@ -56,20 +56,22 @@ input:checked + .slider:before {
 
                 <div class="table-responsive">
                     <table class="table table-striped table-borderless">
-                        <thead>
-                            <tr class="text-center">
-                                <th>Módulo</th>
-                                <th>Ver</th>
-                                <th>Crear</th>
-                                <th>Actualizar</th>
-                                <th>Eliminar</th>
+                        <thead class="text-center">
+                            <tr class="py-3">
+                                <th class="py-3">MÓDULO</th>
+                                <th class="py-3">LISTAR</th>
+                                <th class="py-3">VER</th>
+                                <th class="py-3">CREAR</th>
+                                <th class="py-3">ASIGNAR PERMISOS</th>
+                                <th class="py-3">EDITAR</th>
+                                <th class="py-3">ELIMINAR</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($permisos as $module => $permsForModule)
                                 <tr>
-                                    <td style="text-transform: capitalize;">{{ $module }}</td>
-                                    @foreach(['ver','crear','actualizar','eliminar'] as $action)
+                                    <td style="text-transform: capitalize;"class="text-center">{{ $module }}</td>
+                                    @foreach(['listar','ver','crear','permisos.asignar','editar','eliminar'] as $action)
                                         @php
                                             $permName = "{$module}.{$action}";
                                             $perm = $permsForModule->firstWhere('name', $permName);

@@ -57,7 +57,13 @@
                                                 @csrf
                                                 @method('delete')
                                                 <td>
-                                                    @can('usuarios.actualizar')
+                                                    @can('usuarios.ver')
+                                                    <a class="btn btn-warning btn-sm" 
+                                                    href="{{ route('users.show', $empleado->id) }}">
+                                                    <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    @endcan
+                                                    @can('usuarios.editar')
                                                     <a class="btn btn-info btn-sm"
                                                         href="{{ route('users.edit', $empleado->id) }}"><i
                                                             class="fa-solid fa-pen-to-square"></i></a>

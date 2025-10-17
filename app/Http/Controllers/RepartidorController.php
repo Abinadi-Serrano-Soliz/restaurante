@@ -4,9 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Repartidor;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class RepartidorController extends Controller
+class RepartidorController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+            new Middleware('permission:repartidores.listar', only: ['index']),
+            new Middleware('permission:repartidores.crear', only: ['create', 'store']),
+            new Middleware('permission:repartidores.editar', only: ['edit', 'update']),
+            new Middleware('permission:repartidores.eliminar', only: ['destroy']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */

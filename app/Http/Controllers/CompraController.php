@@ -7,9 +7,23 @@ use App\Models\ProductoAlmacene;
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class CompraController extends Controller
+class CompraController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+            new Middleware('permission:compras.listar', only: ['index']),
+            new Middleware('permission:compras.crear', only: ['create', 'store']),
+            new Middleware('permission:compras.ver', only: ['show']),
+            new Middleware('permission:compras.editar', only: ['edit', 'update']),
+            new Middleware('permission:compras.eliminar', only: ['destroy']),
+        ];
+    }
     
     public function index()
     {

@@ -13,9 +13,9 @@
 
                 {{-- Nombre --}}
                 <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Nombre del menú:</label>
+                    <label class="col-lg-3 col-form-label">Nombre del menú:*</label>
                     <div class="col-lg-9">
-                        <input type="text" name="nombre" class="form-control" required>
+                        <input type="text" name="nombre" class="form-control" value="{{ old('nombre') }}">
                     </div>
                     @error('nombre')
                         <small class="text-danger d-block mt-1">{{ $message }}</small>
@@ -26,7 +26,7 @@
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label">Imagen:</label>
                     <div class="col-lg-9">
-                        <input type="file" name="imagen" class="form-control" accept="image/*">
+                        <input type="file"value="{{ old('imagen') }}" name="imagen" class="form-control" accept="image/*" >
                     </div>
                     @error('imagen')
                         <small class="text-danger d-block mt-1">{{ $message }}</small>
@@ -37,7 +37,7 @@
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label">Descripción:</label>
                     <div class="col-lg-9">
-                        <textarea name="descripcion" class="form-control" rows="3"></textarea>
+                        <textarea name="descripcion" class="form-control" rows="3" >{{ old('descripcion') }}</textarea>
                     </div>
                     @error('descripcion')
                         <small class="text-danger d-block mt-1">{{ $message }}</small>
@@ -46,9 +46,9 @@
 
                 {{-- Precio --}}
                 <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Precio:</label>
+                    <label class="col-lg-3 col-form-label">Precio:*</label>
                     <div class="col-lg-9">
-                        <input type="number" name="precio" step="0.01" class="form-control" required>
+                        <input type="number" name="precio" step="0.01" class="form-control" value="{{ old('precio') }}">
                     </div>
                     @error('precio')
                         <small class="text-danger d-block mt-1">{{ $message }}</small>
@@ -57,9 +57,9 @@
 
                 {{-- Stock --}}
                 <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Stock Menú:</label>
+                    <label class="col-lg-3 col-form-label">Stock Menú:*</label>
                     <div class="col-lg-9">
-                        <input type="text" name="stock_menu" class="form-control">
+                        <input type="text" name="stock_menu" class="form-control" value="{{ old('stock_menu') }}">
                     </div>
                     @error('stock_menu')
                         <small class="text-danger d-block mt-1">{{ $message }}</small>
@@ -115,7 +115,7 @@ function agregarProducto() {
                 </select>
             </div>
             <div class="col-md-6">
-                <label>Cantidad(Kg):</label>
+                <label>Cantidad:</label>
                 <input type="number" step="0.01" name="productos[${contador}][cantidad]" class="form-control" min="0.01" required>
             </div>
         </div>

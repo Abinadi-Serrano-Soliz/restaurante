@@ -16,9 +16,9 @@
             <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        @can('usuarios.crear')
+                       @can('usuarios.crear')
                         <a href="{{ route('users.create') }}" class="btn btn-success">Nuevo Usuario</a>
-                        @endcan
+                       @endcan 
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -53,7 +53,13 @@
                                                 @csrf
                                                 @method('delete')
                                                 <td>
-                                                    @can('usuarios.actualizar')
+                                                    @can('usuarios.ver')
+                                                    <a class="btn btn-warning btn-sm" 
+                                                    href="{{ route('users.show', $user->id) }}">
+                                                    <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    @endcan
+                                                    @can('usuarios.editar')
                                                     <a class="btn btn-info btn-sm"
                                                         href="{{ route('users.edit', $user->id) }}"><i
                                                             class="fa-solid fa-pen-to-square"></i></a>

@@ -112,13 +112,13 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-4 mb-2"><label>Stock Actual</label>
-                        <input type="number" name="almacenes[${almacenId}][stock_actual]" class="form-control" placeholder="Stock actual">
+                        <input type="number" name="almacenes[${almacenId}][stock_actual]" class="form-control" placeholder="Stock actual"required>
                     </div>
                     <div class="col-md-4 mb-2"><label>Stock Minimo</label>
-                        <input type="number" name="almacenes[${almacenId}][stock_minimo]" class="form-control" placeholder="Stock mínimo">
+                        <input type="number" name="almacenes[${almacenId}][stock_minimo]" class="form-control" placeholder="Stock mínimo"required>
                     </div>
                     <div class="col-md-4 mb-2"><label>Unidad Medida</label>
-                        <select name="almacenes[${almacenId}][unidad_medida]" class="form-control">
+                        <select name="almacenes[${almacenId}][unidad_medida]" class="form-control" required>
                             <option value="">Seleccione unidad</option>
                             <option value="unidad">Unidad</option>
                             <option value="kg">Kilogramos</option>
@@ -133,6 +133,8 @@
         // reset selección
         this.value = '';
     });
+
+    
 
     // ocultar alertas después de 3s
     setTimeout(() => {

@@ -4,9 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ProveedorController extends Controller
+class ProveedorController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+            new Middleware('permission:proveedores.listar', only: ['index']),
+            new Middleware('permission:proveedores.crear', only: ['create', 'store']),
+            new Middleware('permission:proveedores.editar', only: ['edit', 'update']),
+            new Middleware('permission:proveedores.eliminar', only: ['destroy']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */

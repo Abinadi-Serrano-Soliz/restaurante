@@ -17,7 +17,9 @@
             <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <a href="{{ route('menus.create') }}" class="btn btn-success">Nuevo Menú</a>
+                        @can('menu.crear')
+                             <a href="{{ route('menus.create') }}" class="btn btn-success">Nuevo Menú</a>
+                        @endcan
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -67,15 +69,21 @@
                                                 @csrf
                                                 @method('delete')
                                                 
-                                                <a class="btn btn-warning btn-sm" href="{{ route('menus.show', $menu->id) }}" title="Ver">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                                <a class="btn btn-primary btn-sm" href="{{ route('menus.edit', $menu->id) }}" title="Editar">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
+                                                @can('menu.ver')
+                                                    <a class="btn btn-warning btn-sm" href="{{ route('menus.show', $menu->id) }}" title="Ver">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('menu.editar')
+                                                    <a class="btn btn-primary btn-sm" href="{{ route('menus.edit', $menu->id) }}" title="Editar">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('menu.eliminar')
+                                                    <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                @endcan
                                             </form>
                                         </td>
                                     </tr>

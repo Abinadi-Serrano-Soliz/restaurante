@@ -6,9 +6,23 @@ use App\Models\ProductoAlmacene;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class MenuController extends Controller
+class MenuController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+            new Middleware('permission:menu.listar', only: ['index']),
+            new Middleware('permission:menu.crear', only: ['create', 'store']),
+            new Middleware('permission:menu.ver', only: ['show']),
+            new Middleware('permission:menu.editar', only: ['edit', 'update']),
+            new Middleware('permission:menu.eliminar', only: ['destroy']),
+        ];
+    }
+
     public function index()
     {
         $menus = Menu::with('producto_almacenes.producto')->get();
@@ -28,7 +42,7 @@ class MenuController extends Controller
             'descripcion' => 'nullable|string',
             'precio' => 'required|numeric|min:0',
             'stock_menu' => 'required|integer|min:0',
-            'imagen' => 'nullable|image|mimes:jpg,jpeg,png',
+            'imagen' => 'nullable|image|mimes:jpg,jpeg,png,webp',
 
              // Validar productos del menú
             'productos' => 'required|array|min:1',
@@ -91,6 +105,9 @@ class MenuController extends Controller
         'productos' => 'required|array|min:1',
         'productos.*.id_ProductoAlmacen' => 'required|integer|exists:producto_almacenes,id',
         'productos.*.cantidad' => 'required|numeric|min:0.01',
+     ],
+        [
+           'productos.*.cantidad' => 'solo se permiten numeros',
     ]);
 
     DB::beginTransaction();
