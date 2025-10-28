@@ -24,5 +24,11 @@ class Compra extends Model
                     ->withPivot('cantidad_compra', 'precio_unitario', 'subtotal')
                     ->withTimestamps();
     }
+
+    //  AGREGA ESTA RELACIÓN 
+    public function producto_almacen__compras()
+    {
+        return $this->hasMany(ProductoAlmacen_Compra::class, 'id_compra');
+    }
    
 }

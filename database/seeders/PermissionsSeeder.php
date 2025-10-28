@@ -77,6 +77,27 @@ class PermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'menu.editar', 'guard_name' => 'web']);
         Permission::firstOrCreate(['name' => 'menu.eliminar', 'guard_name' => 'web']);
 
+        // Permisos para el módulo pedidos
+        Permission::firstOrCreate(['name' => 'pedidos.listar', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'pedidos.ver', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'pedidos.crear', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'pedidos.editar', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'pedidos.eliminar', 'guard_name' => 'web']);
+
+         // Permisos para el módulo pagos
+        Permission::firstOrCreate(['name' => 'pagos.listar', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'pagos.ver', 'guard_name' => 'web']);
+    
+         // Permisos para el módulo inventario
+        Permission::firstOrCreate(['name' => 'ajustes.listar', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'ajustes.ver', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'ajustes.crear', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'ajustes.editar', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'ajustes.eliminar', 'guard_name' => 'web']);
+
+        // reportes 
+        Permission::firstOrCreate(['name' => 'reportes.listar', 'guard_name' => 'web']);
+       
     }
     
     

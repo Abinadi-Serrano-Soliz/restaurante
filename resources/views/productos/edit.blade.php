@@ -51,7 +51,7 @@
                 <div class="form-group row">
                     <label class="col-lg-2 col-form-label">Categoría:*</label>
                     <div class="col-lg-10">
-                        <select name="id_categoria" class="form-control">
+                        <select name="id_categoria" class="form-control select-producto">
                             <option value="">-- Selecciona una categoría --</option>
                             @foreach($categorias as $categoria)
                                 <option value="{{ $categoria->id }}"
@@ -87,7 +87,7 @@
                             <div class="row mt-2">
                                 <div class="col-md-4 mb-2"><label>Stock Actual</label>
                                     <input type="number" name="almacenes[{{ $almacen->id }}][stock_actual]"
-                                           class="form-control" placeholder="Stock actual"
+                                           class="form-control" placeholder="Stock actual" step="0.01" min="0"
                                            value="{{ $almacen->pivot->stock_actual }}">
                                 </div>
                                 <div class="col-md-4 mb-2"><label>Stock Minimo</label>
@@ -141,7 +141,7 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-4 mb-2"><label>Stock Actual</label>
-                        <input type="number" name="almacenes[${almacenId}][stock_actual]" class="form-control" placeholder="Stock actual">
+                        <input type="number" name="almacenes[${almacenId}][stock_actual]" class="form-control" placeholder="Stock actual"step="0.01" min="0">
                     </div>
                     <div class="col-md-4 mb-2"><label>Stock Minimo</label>
                         <input type="number" name="almacenes[${almacenId}][stock_minimo]" class="form-control" placeholder="Stock mínimo">
@@ -160,6 +160,17 @@
         }
 
         this.value = '';
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar Select2 en todos los elementos con la clase select-producto
+        $('.select-producto').each(function() {
+            $(this).select2({
+                width: '100%',
+                placeholder: '-- Seleccione un Registro --',
+                allowClear: true
+            });
+        });
     });
 
     // ocultar alertas después de 3s

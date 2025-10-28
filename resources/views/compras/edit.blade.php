@@ -31,7 +31,7 @@
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label">Proveedor*:</label>
                     <div class="col-lg-9">
-                        <select name="id_proveedor" class="form-control" required>
+                        <select name="id_proveedor" class="form-control select-producto" required>
                             <option value="">-- Seleccione un proveedor --</option>
                             @foreach($proveedores as $proveedor)
                                 <option value="{{ $proveedor->id }}"
@@ -132,15 +132,15 @@
                 </div>
                 <div class="col-md-2 mb-2">
                     <label>Cantidad</label>
-                    <input type="number" name="productos[${contador}][cantidad_compra]" class="form-control cantidad" value="${cantidad}" min="1" required>
+                    <input type="number" name="productos[${contador}][cantidad_compra]" class="form-control cantidad" value="${cantidad}" step="0.01" min="0" required>
                 </div>
                 <div class="col-md-2 mb-2">
                     <label>Precio Kg/L/Unidad</label>
-                    <input type="number" name="productos[${contador}][precio_unitario]" class="form-control precio" step="0.01" min="0" value="${precio}" readonly>
+                    <input type="number" name="productos[${contador}][precio_unitario]" class="form-control precio" step="0.01" min="0" value="${precio}"required >
                 </div>
                 <div class="col-md-3 mb-2">
                     <label>Subtotal</label>
-                    <input type="number" name="productos[${contador}][subtotal]" class="form-control subtotal" step="0.01" min="0" value="${subtotal}" required>
+                    <input type="number" name="productos[${contador}][subtotal]" class="form-control subtotal" step="0.01" min="0" value="${subtotal}" readonly>
                 </div>
             </div>
         `;
@@ -158,6 +158,7 @@
         // Ejecutar calcularTotal después de un pequeño retraso para asegurar que el DOM esté listo
        
         setTimeout(() => {
+            //select2
              $('.select-producto').select2({
                 width: '100%',
                 placeholder: '-- Seleccione un producto --',
@@ -173,15 +174,17 @@
 
     // Calcular precio unitario y total
     document.addEventListener('input', function(e) {
-        if (e.target.classList.contains('cantidad') || e.target.classList.contains('subtotal')) {
+        if (e.target.classList.contains('cantidad') || e.target.classList.contains('precio')) {
             const row = e.target.closest('.row');
             const cantidad = parseFloat(row.querySelector('.cantidad').value) || 0;
-            const subtotal = parseFloat(row.querySelector('.subtotal').value) || 0;
+            const precio = parseFloat(row.querySelector('.precio').value) || 0;
 
-            let precio = 0;
-            if (cantidad > 0) precio = subtotal / cantidad;
+            let subtotal = 0;
+            if (cantidad > 0){
+                subtotal = cantidad * precio;
+            }
 
-            row.querySelector('.precio').value = precio.toFixed(2);
+            row.querySelector('.subtotal').value = subtotal.toFixed(2);
             calcularTotal();
         }
     });

@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('producto_almacen__compras', function (Blueprint $table) {
+        Schema::create('detalle_pedidos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_compra');
-            $table->unsignedBigInteger('id_ProductoAlmacen');
-            $table->decimal('cantidad_compra',10,2);
+            $table->unsignedBigInteger('id_pedido');
+            $table->unsignedBigInteger('id_menu');
+            $table->integer('cantidad_pedido');
             $table->decimal('precio_unitario', 10, 2);
             $table->decimal('subtotal', 10, 2);
+            $table->integer('estado')->default(1); //
 
-            $table->foreign('id_compra')->references('id')->on('compras')->onDelete('cascade');
-            $table->foreign('id_ProductoAlmacen')->references('id')->on('producto_almacenes')->onDelete('cascade');
+            $table->foreign('id_pedido')->references('id')->on('pedidos')->onDelete('cascade');
+            $table->foreign('id_menu')->references('id')->on('menus')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('producto_almacen__compras');
+        Schema::dropIfExists('detalle_pedidos');
     }
 };

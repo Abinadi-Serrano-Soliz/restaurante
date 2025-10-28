@@ -51,7 +51,7 @@
                 <div class="form-group row">
                     <label class="col-lg-2 col-form-label">Categoría:*</label>
                     <div class="col-lg-10">
-                        <select name="id_categoria" class="form-control" >
+                        <select name="id_categoria" class="form-control select-producto">
                             <option value="">-- Selecciona una categoría --</option>
                             @foreach($categorias as $categoria)
                                 <option value="{{ $categoria->id }}"
@@ -67,7 +67,7 @@
                 <div class="form-group row">
                     <label class="col-lg-2 col-form-label">Añadir a Almacén:*</label>
                     <div class="col-lg-10">
-                        <select id="select-almacen" class="form-control" >
+                        <select id="select-almacen" class="form-control " >
                             <option value="">-- Selecciona un almacén --</option>
                             @foreach($almacenes as $almacen)
                                 <option value="{{ $almacen->id }}">{{ $almacen->nombre }}</option>
@@ -95,11 +95,12 @@
 
 {{-- Script para mostrar campos de almacenes --}}
 <script>
+   
     document.getElementById('select-almacen').addEventListener('change', function () {
         let almacenId = this.value;
         let almacenText = this.options[this.selectedIndex].text;
         let container = document.getElementById('almacenes-container');
-
+         
         if (almacenId && !document.getElementById('almacen-' + almacenId)) {
             let div = document.createElement('div');
             div.classList.add('border', 'rounded', 'p-3', 'mb-2');
@@ -112,7 +113,7 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-4 mb-2"><label>Stock Actual</label>
-                        <input type="number" name="almacenes[${almacenId}][stock_actual]" class="form-control" placeholder="Stock actual"required>
+                        <input type="number" name="almacenes[${almacenId}][stock_actual]" class="form-control select-producto" placeholder="Stock actual"step="0.01" min="0"required>
                     </div>
                     <div class="col-md-4 mb-2"><label>Stock Minimo</label>
                         <input type="number" name="almacenes[${almacenId}][stock_minimo]" class="form-control" placeholder="Stock mínimo"required>
@@ -129,17 +130,26 @@
             `;
             container.appendChild(div);
         }
-
+        
         // reset selección
         this.value = '';
     });
-
-    
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar Select2 en todos los elementos con la clase select-producto
+        $('.select-producto').each(function() {
+            $(this).select2({
+                width: '100%',
+                placeholder: '-- Seleccione un Registro --',
+                allowClear: true
+            });
+        });
+    });
 
     // ocultar alertas después de 3s
     setTimeout(() => {
         let alerta = document.getElementById('alerta');
         if (alerta) alerta.style.display = 'none';
+       
     }, 3000);
 </script>
 

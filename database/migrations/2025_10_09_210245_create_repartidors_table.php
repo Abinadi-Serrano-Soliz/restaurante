@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('telefono');
             $table->string('placa')->unique();
             $table->string('tipo_vehiculo');
-            $table->boolean('estado')->default(false);
+            $table->boolean('estado')->default(true);
             
             $table->timestamps();
         });

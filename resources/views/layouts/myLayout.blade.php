@@ -8,6 +8,7 @@
     <title>@yield('title')</title>
 
     <link href="{!! asset('css/bootstrap.min.css') !!}" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <link href="{!! asset('css/plugins/iCheck/custom.css') !!}" rel="stylesheet">
@@ -22,7 +23,17 @@
     <link href="{!! asset('css/plugins/chosen/bootstrap-chosen.css') !!}" rel="stylesheet">
     <!-- CSS de Select2  para añadir busquedas a los select-->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
- 
+    <!-- para usar leaflet para la ubicacion de mapa -->
+    {{-- Leaflet CSS --}}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+     <!-- Morris -->
+    <link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
    
     @yield('style')
 </head>
@@ -33,13 +44,13 @@
             <div class="sidebar-collapse">
                 <ul class="nav metismenu" id="side-menu">
                     <li class="nav-header">
-                        <div class="dropdown profile-element">
-                            <img alt="image" class="rounded-circle" style="width: 100px; height: 100px; margin-left:15px"
-                                src="{{ asset('logo.png') }}" />
+                        <div class="dropdown profile-element text-center">
+                            <img alt="image" class="rounded-circle" style="width: 100px; height: 100px; "
+                                src="{{ asset('tropical-logo.png') }}" />
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="block m-t-xs font-bold"> 
                                      </span>
-                                <span class="text-muted text-xs block"><b
+                                <span class="text-muted text-xs block">{{ Auth::user()->getRoleNames()->first() ?? '' }}<b
                                         class="caret"></b></span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
@@ -55,53 +66,73 @@
                     </li>
                     
                         <li>
-                            <a href="#"><i class="fa fa-tachometer"></i><span class="nav-label">Panel
+                            <a href="{{ route('dashboard') }}"><i class="fa fa-tachometer"></i><span class="nav-label">Panel
                                     de
                                     Control</span> </a>
                         </li>
-                        @can('menu.listar')
+
+                        @canany(['pedidos.listar','clientes.listar','repartidores.listar','menu.listar'])
                             <li>
-                                <a href="{{ route('menus.index') }}"><i class="fa fa-road"></i><span
-                                        class="nav-label">Menú</span>
-                                </a>
+                                <a href="#"><i class="fa fa-solid fa-truck-ramp-box"></i> <span class="nav-label">Modulo de Pedido</span><span
+                                        class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse">
+
+                                    @can('pedidos.listar')
+                                    <li><a href="{{route('pedidos.index')}}"><i class="fa fa-solid fa-truck-ramp-box"></i>Pedidos</a></li>
+                                    @endcan
+
+                                    @can('clientes.listar')
+                                        <li>
+                                            <a href="{{ route('clientes.index') }}"><i class="fa fa-users"></i>Clientes
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @can('repartidores.listar')
+                                        <li>
+                                            <a href="{{ route('repartidores.index') }}"><i class="fa fa-users"></i>Repartidores
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @can('menu.listar')
+                                        <li>
+                                            <a href="{{ route('menus.index') }}"><i class="fa fa-solid fa-utensils"></i>Menú
+                                            </a>
+                                        </li>
+                                    @endcan
+                        
+                                
+                                </ul>
                             </li>
-                        @endcan
-                        @can('repartidores.listar')
+                        @endcanany
+                            
+                        @can('pagos.listar')
+                            
                             <li>
-                                <a href="{{ route('repartidores.index') }}"><i class="fa fa-users"></i><span
-                                        class="nav-label">Repartidores</span>
-                                </a>
-                            </li>
-                        @endcan
-                        @can('clientes.listar')
-                            <li>
-                                <a href="{{ route('clientes.index') }}"><i class="fa fa-users"></i><span
-                                        class="nav-label">Clientes</span>
-                                </a>
+                             <a href="{{ route('pagos.index') }}"><i class="fa fa-solid fa-coins"></i><span class="nav-label">Pagos</span> </a>
                             </li>
                         @endcan
 
+                        @canany(['compras.listar', 'proveedores.listar'])
                          <li>
                             <a href="#"><i class="fa fa-solid fa-cart-shopping"></i> <span class="nav-label">Modulo de Compra</span><span
                                     class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 @can('compras.listar')
                                  <li>
-                                    <a href="{{ route('compras.index') }}"><i class="fa fa-solid fa-cart-shopping"></i><span
-                                            class="nav-label">Compras</span>
+                                    <a href="{{ route('compras.index') }}"><i class="fa fa-solid fa-cart-shopping"></i>Compras
                                     </a>
                                 </li>
                                 @endcan
                                 @can('proveedores.listar')
                                     <li>
-                                        <a href="{{ route('proveedores.index') }}"><i class="fa fa-solid fa-people-group"></i><span
-                                                class="nav-label">Proveedores</span>
+                                        <a href="{{ route('proveedores.index') }}"><i class="fa fa-solid fa-people-group"></i>Proveedores
                                         </a>
                                     </li>
                                 @endcan
                             </ul>
-                        </li>
-                        
+                         </li>
+                        @endcanany
+                        @canany(['productos.listar', 'categorias.listar','almacenes.listar'])
                         <li>
                             <a href="#"><i class="fa fa-solid fa-warehouse"></i> <span class="nav-label">Modulo de Almacén</span><span
                                     class="fa arrow"></span></a>
@@ -113,7 +144,7 @@
                                     </a>
                                 </li>
                                 @endcan
-                                @can('categorias.listar')
+                                @can('almacenes.listar')
                                     <li>
                                         <a href="{{ route('almacenes.index') }}"><i class="fas fa-warehouse"></i>
                                             Almacenes
@@ -129,21 +160,44 @@
                                 @endcan
                             </ul>
                         </li>
-                   
-                        <li>
-                            <a href="#"><i class="fa fa-lock"></i> <span class="nav-label">Modulo de Usuario</span><span
-                                    class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level collapse">
-                                @can('roles.listar')
-                                     <li><a href="{{route('roles.index')}}">Roles y Permisos</a></li>
-                                @endcan
-                                @can('usuarios.listar')
-                                    <li><a href="{{route('users.index')}}"><i class="fa fa-solid fa-users"></i>Usuarios</a></li>
-                                    <li><a href="{{route('users.empleados')}}"><i class="fa fa-solid fa-user-tie"></i>Empleados</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                       
+                        @endcanany
+
+                        @can('ajustes.listar')
+                            <li>
+                             <a href="{{ route('ajustes.index') }}"><i class="fa fa-solid fa-arrow-right-arrow-left"></i><span class="nav-label">Inventario(ajustes)</span> </a>
+                            </li>
+                        @endcan
+
+                        @canany(['roles.listar','usuarios.listar'])
+                            <li>
+                                <a href="#"><i class="fa fa-lock"></i> <span class="nav-label">Modulo de Usuario</span><span
+                                        class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse">
+                                    @can('roles.listar')
+                                        <li><a href="{{route('roles.index')}}">Roles y Permisos</a></li>
+                                    @endcan
+                                    @can('usuarios.listar')
+                                        <li><a href="{{route('users.index')}}"><i class="fa fa-solid fa-users"></i>Usuarios</a></li>
+                                        <li><a href="{{route('users.empleados')}}"><i class="fa fa-solid fa-user-tie"></i>Empleados</a></li>
+                                    @endcan
+                                </ul>
+                            </li>
+                        @endcanany
+                           @can('reportes.listar')
+                            <li>
+                                <a href="#"><i class="fas fa-chart-line"></i> <span class="nav-label">Modulo de Reportes</span><span
+                                        class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse">
+                                      
+                                        <li><a href="{{ route('reportespedidos') }}">Reporte de Pedidos</a></li>
+                                  
+                                    
+                                        <li><a href="{{ route('reportescompras') }}"></i>Reporte de Compras</a></li>
+                                        
+                                    
+                                </ul>
+                            </li>
+                        @endcan
                     {{-- <li>
                         <a href="mailbox.html"><i class="fa fa-envelope"></i> <span class="nav-label">Mis Tareas
                             </span><span class="label label-warning float-right">16/24</span></a>
@@ -378,116 +432,13 @@
                     <div class="navbar-header">
                         <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i
                                 class="fa fa-bars"></i> </a>
-                        <form role="search" class="navbar-form-custom" action="search_results.html">
-                            <div class="form-group">
-                                <input type="text" placeholder="Search for something..." class="form-control"
-                                    name="top-search" id="top-search">
-                            </div>
-                        </form>
+                        
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
-                        <li>
-                            <span class="m-r-sm text-muted welcome-message">Gobierno de Santa Cruz de la Sierra</span>
-                        </li>
+                        
+                       
                         <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-envelope"></i> <span class="label label-warning">324324324</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-messages">
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <a class="dropdown-item float-left" href="#">
-                                            <img alt="image" class="rounded-circle"
-                                                src="{{ asset('logo.png') }}">
-                                        </a>
-                                        <div class="media-body">
-                                            <small class="float-right">46h ago</small>
-                                            <strong>Mike Loreipsum</strong> started following <strong>Monica
-                                                Smith</strong>. <br>
-                                            <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="dropdown-divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <a class="dropdown-item float-left" href="profile.html">
-                                            <img alt="image" class="rounded-circle"
-                                                src="{{ asset('img/a4.jpg') }}">
-                                        </a>
-                                        <div class="media-body ">
-                                            <small class="float-right text-navy">5h ago</small>
-                                            <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica
-                                                Smith</strong>. <br>
-                                            <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="dropdown-divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <a class="dropdown-item float-left" href="profile.html">
-                                            <img alt="image" class="rounded-circle"
-                                                src="{{ asset('img/profile.jpg') }}">
-                                        </a>
-                                        <div class="media-body ">
-                                            <small class="float-right">23h ago</small>
-                                            <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
-                                            <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="dropdown-divider"></li>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a href="mailbox.html" class="dropdown-item">
-                                            <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-bell"></i> <span class="label label-primary">8</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-alerts">
-                                <li>
-                                    <a href="mailbox.html" class="dropdown-item">
-                                        <div>
-                                            <i class="fa fa-envelope fa-fw"></i> You have 16 messages
-                                            <span class="float-right text-muted small">4 minutes ago</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="dropdown-divider"></li>
-                                <li>
-                                    <a href="profile.html" class="dropdown-item">
-                                        <div>
-                                            <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                            <span class="float-right text-muted small">12 minutes ago</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="dropdown-divider"></li>
-                                <li>
-                                    <a href="grid_options.html" class="dropdown-item">
-                                        <div>
-                                            <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                            <span class="float-right text-muted small">4 minutes ago</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="dropdown-divider"></li>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a href="notifications.html" class="dropdown-item">
-                                            <strong>See All Alerts</strong>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
+                           
                         </li>
                         <li>
                             <a href="#"id="logout-link2">
@@ -545,9 +496,13 @@
 
        <!-- JS de Select2 para añadir busquedas a los select-->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
-
+ <!-- para usar leaflet para la ubicacion de mapa -->
+    {{-- Leaflet JS --}}
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+        </script> 
+        <!-- para usar leaflet para ir a mi ubicacion -->
+    <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
     <script>
         $(document).ready(function() {
             $('.formulario-eliminar').submit(function(e) {
@@ -697,6 +652,7 @@
 </script>
 @endif
 
+   
 </body>
 
 </html>

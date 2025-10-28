@@ -38,7 +38,7 @@ class PerfilController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
     }
 
     /**
@@ -61,7 +61,7 @@ class PerfilController extends Controller
     // Validaciones
     $request->validate([
         'old_password' => 'nullable|required_with:password|string',
-        'password' => 'nullable|string|min:8|confirmed',
+        'password' => 'nullable|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*\s)(?!.*\*).*$/',
     ]);
 
     // Si el usuario no es un Eloquent model, obtenemos el modelo real

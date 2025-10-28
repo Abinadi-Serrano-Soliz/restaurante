@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_producto');
             $table->unsignedBigInteger('id_almacen');
-            $table->integer('stock_actual')->default(0);
-            $table->integer('stock_minimo')->default(0);
+            $table->decimal('stock_actual')->default(0);
+            $table->decimal('stock_minimo')->default(0);
             $table->string('unidad_medida', 50)->nullable();
 
             $table->foreign('id_producto')->references('id')->on('productos')->onDelete('cascade');

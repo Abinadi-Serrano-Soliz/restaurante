@@ -28,19 +28,19 @@
             @endif
 
 
-            <form action="{{ route('compras.store') }}" method="POST">
+            <form action="{{ route('compras.store') }}" method="POST" id="compra-form">
                 @csrf
 
                 {{-- Proveedor --}}
                 <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Proveedor*:</label>
+                    <label class="col-lg-3 col-form-label ">Proveedor*:</label>
                     <div class="col-lg-9">
-                        <select name="id_proveedor" class="form-control" required>
+                        <select name="id_proveedor" class="form-control select-producto" required>
                             <option value="">-- Seleccione un proveedor --</option>
                             @foreach($proveedores as $proveedor)
                                 <option value="{{ $proveedor->id }}"
                                     {{ old('id_proveedor') == $proveedor->id ? 'selected' : '' }}>
-                                    {{ $proveedor->nombre }}
+                                    {{ $proveedor->nombre }} {{ $proveedor->apellidos }}
                                 </option>
                             @endforeach
                         </select>
@@ -95,7 +95,10 @@
 <script>
     let contador = 0;
     const productos = @json($productos_almacen);
+    const container = document.getElementById('productos-container');
+    const form = document.getElementById('compra-form');
 
+    
     document.getElementById('add-product').addEventListener('click', function () {
         let container = document.getElementById('productos-container');
         let div = document.createElement('div');
@@ -123,11 +126,11 @@
                 </div>
                 <div class="col-md-2 mb-2">
                     <label>Cantidad(Kg/Li/Unidad)</label>
-                    <input type="number" name="productos[${contador}][cantidad_compra]" class="form-control cantidad" min="1" required>
+                    <input type="number" name="productos[${contador}][cantidad_compra]" class="form-control cantidad" step="0.01" min="0" required>
                 </div>
                 <div class="col-md-2 mb-2">
                     <label>Precio (K,L,U)</label>
-                    <input type="number" name="productos[${contador}][precio_unitario]" class="form-control precio" step="0.01" min="0" >
+                    <input type="text" name="productos[${contador}][precio_unitario]" class="form-control precio" step="0.01" min="0" >
                 </div>
                 <div class="col-md-3 mb-2">
                     <label>Subtotal</label>
@@ -146,8 +149,32 @@
             allowClear: true
         });
     });
+     document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar Select2 en todos los elementos con la clase select-producto
+        $('.select-producto').each(function() {
+            $(this).select2({
+                width: '100%',
+                placeholder: '-- Seleccione un Registro --',
+                allowClear: true
+            });
+        });
+    });
 
-    // Calcular precio unitario (subtotal / cantidad)
+     // Validación para requerir al menos un producto
+        form.addEventListener('submit', function(e) {
+            if(container.children.length == 0) {
+                e.preventDefault();
+            swal({
+                    title: "¡Atención!",
+                    text: "Debe agregar al menos un producto a la Compra.",
+                    type: "warning",
+                    confirmButtonText: "Aceptar"
+                });
+                return false;
+            }
+        });
+
+    // Calcular subtotal (precio_unitario * cantidad)
     document.addEventListener('input', function(e) {
         if (e.target.classList.contains('cantidad') || e.target.classList.contains('precio')) {
             const row = e.target.closest('.row');
@@ -173,6 +200,8 @@
         });
         document.getElementById('monto_total').value = total.toFixed(2);
     }
+
+   
 
     // Ocultar alertas después de 3s
     setTimeout(() => {

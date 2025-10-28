@@ -57,14 +57,14 @@ input:checked + .slider:before {
                 <div class="table-responsive">
                     <table class="table table-striped table-borderless">
                         <thead class="text-center">
-                            <tr class="py-3">
-                                <th class="py-3">MÓDULO</th>
-                                <th class="py-3">LISTAR</th>
-                                <th class="py-3">VER</th>
-                                <th class="py-3">CREAR</th>
-                                <th class="py-3">ASIGNAR PERMISOS</th>
-                                <th class="py-3">EDITAR</th>
-                                <th class="py-3">ELIMINAR</th>
+                            <tr class="">
+                                <th class="pb-4">MÓDULO</th>
+                                <th class="pb-4">LISTAR</th>
+                                <th class="pb-4">VER</th>
+                                <th class="pb-4">CREAR</th>
+                                <th width="10">ASIGNAR PERMISOS</th>
+                                <th class="pb-4">EDITAR</th>
+                                <th class="pb-4">ELIMINAR</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -121,5 +121,48 @@ input:checked + .slider:before {
         // Cambiamos el texto del botón
         toggleBtn.textContent = allChecked ? 'Seleccionar todos' : 'Deseleccionar todos';
     });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleccionamos todas las filas de la tabla (cada módulo)
+    const filas = document.querySelectorAll('tbody tr');
+
+    filas.forEach(fila => {
+        // Obtenemos el checkbox del permiso 'listar'
+        const listarCheckbox = fila.querySelector('input[value$=".listar"]');
+
+        if (listarCheckbox) {
+            listarCheckbox.addEventListener('change', function() {
+                // Todos los checkboxes de esta fila
+                const checkboxes = fila.querySelectorAll('input[type="checkbox"]');
+
+                // Si desactiva 'listar', desmarcamos y bloqueamos los demás
+                if (!this.checked) {
+                    checkboxes.forEach(cb => {
+                        if (cb !== listarCheckbox) {
+                            cb.checked = false;
+                            cb.disabled = true;
+                        }
+                    });
+                } else {
+                    // Si se vuelve a activar 'listar', habilitamos los demás
+                    checkboxes.forEach(cb => {
+                        cb.disabled = false;
+                    });
+                }
+            });
+
+            // Lógica inicial: si 'listar' está desactivado al cargar, bloquear otros
+            if (!listarCheckbox.checked) {
+                const checkboxes = fila.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => {
+                    if (cb !== listarCheckbox) {
+                        cb.disabled = true;
+                    }
+                });
+            }
+        }
+    });
+});
 </script>
 @endsection

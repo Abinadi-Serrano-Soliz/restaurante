@@ -32,6 +32,13 @@ class User extends Authenticatable
         'password',
     ];
 
+    //relacion inversa con pedidos
+        public function pedidos()
+        {
+            return $this->hasMany(Pedido::class, 'id_pedido');
+        }
+
+
     /**
      * The attributes that should be hidden for serialization.
      *

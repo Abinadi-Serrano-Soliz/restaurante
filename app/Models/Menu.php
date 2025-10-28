@@ -22,4 +22,18 @@ class Menu extends Model
                     ->withPivot('cantidad')
                     ->withTimestamps();
     }
+
+     // Relación inversa con PEDIDO
+    public function pedidos()
+    {
+        return $this->belongsToMany(Pedido::class, 'detalle_pedidos','id_pedido','id_menu')
+                    ->withPivot('cantidad_pedido', 'precio_unitario', 'subtotal', 'estado')
+                    ->withTimestamps();
+    }
+
+     //relacion con detalle menu
+    public function detalle_menus(){
+
+        return $this->hasMany(DetalleMenu::class,'id_menu');
+    }
 }
