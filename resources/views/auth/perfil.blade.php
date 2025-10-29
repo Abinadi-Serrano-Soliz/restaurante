@@ -52,7 +52,7 @@
 
                         <div class="d-flex justify-content-end">
                              <div class="p-2">
-                                    <a href="{{ route('proveedores.index') }}" class="btn  btn-secondary ">Cancelar</a>
+                                    <a href="{{ route('panel.index') }}" class="btn  btn-secondary ">Cancelar</a>
                              </div>
                              <div class="p-2">
                                     <button type="submit" class="btn btn-success">Guardar cambios</button>

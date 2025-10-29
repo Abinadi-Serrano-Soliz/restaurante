@@ -58,7 +58,7 @@ class ProveedorController extends Controller implements HasMiddleware
             'direccion'=>$request->direccion,
         ]);
 
-        return redirect()->route('proveedores.index')->with('success','Repartidor creado correctamente');
+        return redirect()->route('proveedores.index')->with('success','Proveedor creado correctamente');
     }
 
     /**

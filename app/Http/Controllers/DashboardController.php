@@ -11,9 +11,20 @@ use App\Models\ProductoAlmacene;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class DashboardController extends Controller
+class DashboardController extends Controller implements HasMiddleware
 {
+     public static function middleware(): array
+    {
+        return [
+            'auth',
+            new Middleware('permission:panel de control.listar', only: ['index']),
+          
+        ];
+    }
+
      public function index()
     {
         // Total de pedidos

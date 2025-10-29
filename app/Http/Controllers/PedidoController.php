@@ -91,7 +91,7 @@ class PedidoController extends Controller implements HasMiddleware
         ]);
 
         
-        // === 2. Insertar detalles y actualizar stock ===
+        // === 2. Insertar detalles  ===
         foreach ($request->menus as $item) {
             
             $subtotal = $item['cantidad_pedido'] * $item['precio_unitario'];

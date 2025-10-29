@@ -4,7 +4,7 @@
    <div class="d-flex justify-content-center align-items-center vh-100">
                         <div class="col-lg-9 col-md-9">
                             <div class="ibox-title">
-                                <h5>Crear Cliente</h5>
+                                <h5>Crear Proveedor</h5>
                                 <div class="ibox-tools">
                                     <a class="collapse-link">
                                         <i class="fa fa-chevron-up"></i>

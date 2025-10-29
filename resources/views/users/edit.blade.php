@@ -107,19 +107,38 @@
                                     @error('password')
                                                 <small class="text-danger d-block mt-1">{{ $message }}</small>
                                     @enderror
-                                    <div class="form-group row"><label class="col-lg-1 col-form-label">Rol: </label>
+                                    <div class="form-group row">
+                                        <label class="col-lg-1 col-form-label">Rol: </label>
                                         <div class="col-lg-10">
-                                            <select name="role" class="form-control" >
+                                            <select id="roleSelect" class="form-control select-producto">
                                                 <option value="">--selecciona un rol--</option>
-                                               @foreach ($roles as $role)
-                                                    <option value="{{ $role->name }}"
-                                                        {{ $user->roles->contains('name', $role->name) ? 'selected' : '' }}>
+                                                @foreach ($roles as $role)
+                                                    <option value="{{ $role->name }}">
                                                         {{ ucfirst($role->name) }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        
+                                    </div>
+
+                                    <div class="form-group row mt-3">
+                                        <label class="col-lg-1 col-form-label">Roles asignados: </label>
+                                        <div class="col-lg-10">
+                                            <div id="rolesContainer" class="border rounded p-3 bg-light" style="min-height: 80px;">
+                                                @foreach ($user->roles as $role)
+                                                    <span class="badge badge-primary badge-lg mr-2 mb-2" data-role="{{ $role->name }}" style="font-size: 14px; padding: 8px 12px;">
+                                                        {{ ucfirst($role->name) }}
+                                                        <button type="button" class="btn-close-badge ml-2" onclick="removeRole('{{ $role->name }}')" style="background: none; border: none; color: white; cursor: pointer; font-size: 16px;">&times;</button>
+                                                    </span>
+                                                @endforeach
+                                            </div>
+                                            <!-- Campos hidden para enviar los roles al servidor -->
+                                            <div id="hiddenRolesContainer">
+                                                @foreach ($user->roles as $role)
+                                                    <input type="hidden" name="roles[]" value="{{ $role->name }}" data-role-input="{{ $role->name }}">
+                                                @endforeach
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class=" d-flex justify-content-end pr-5 pt-3">
                                             <div class="p-2">
@@ -136,6 +155,14 @@
                         </div>
                     </div>
 
+
+
+     <!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>            
+
     <script>
 
     // Espera 5 segundos y luego oculta los mensajes de error
@@ -147,6 +174,89 @@
         });
     }, 5000);
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar Select2
+    $('.select-producto').select2({
+        width: '100%',
+        placeholder: '-- Selecciona un rol --',
+        allowClear: true
+    });
+
+    const rolesContainer = document.getElementById('rolesContainer');
+    const hiddenRolesContainer = document.getElementById('hiddenRolesContainer');
+
+    // ✅ Evento correcto para detectar selección en Select2
+    $('#roleSelect').on('select2:select', function (e) {
+        const selectedRole = e.params.data.id;
+
+        if (!selectedRole) return;
+
+        // Evitar roles duplicados
+        const existingBadge = rolesContainer.querySelector(`[data-role="${selectedRole}"]`);
+        if (existingBadge) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Rol duplicado',
+                text: 'Este rol ya está asignado al usuario',
+                confirmButtonText: 'Entendido'
+            });
+            $(this).val('').trigger('change'); // limpiar visualmente el select
+            return;
+        }
+
+        // Crear badge visual
+        const badge = document.createElement('span');
+        badge.className = 'badge badge-primary badge-lg mr-2 mb-2';
+        badge.setAttribute('data-role', selectedRole);
+        badge.style.fontSize = '14px';
+        badge.style.padding = '8px 12px';
+        badge.innerHTML = `
+            ${selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}
+            <button type="button" class="btn-close-badge ml-2" onclick="removeRole('${selectedRole}')" style="background: none; border: none; color: white; cursor: pointer; font-size: 16px;">&times;</button>
+        `;
+
+        rolesContainer.appendChild(badge);
+
+        // Crear input oculto para enviar al servidor
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'roles[]';
+        hiddenInput.value = selectedRole;
+        hiddenInput.setAttribute('data-role-input', selectedRole);
+        hiddenRolesContainer.appendChild(hiddenInput);
+
+        // Resetear select visualmente
+        $(this).val('').trigger('change');
+    });
+});
+
+// Función global para eliminar rol
+function removeRole(roleName) {
+    const badge = document.querySelector(`[data-role="${roleName}"]`);
+    if (badge) badge.remove();
+
+    const hiddenInput = document.querySelector(`[data-role-input="${roleName}"]`);
+    if (hiddenInput) hiddenInput.remove();
+}
+</script>
+
+<style>
+.badge {
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-close-badge:hover {
+    opacity: 0.8;
+}
+
+#rolesContainer:empty::before {
+    content: 'No hay roles asignados';
+    color: #6c757d;
+    font-style: italic;
+}
+</style>
 @endsection
 
 

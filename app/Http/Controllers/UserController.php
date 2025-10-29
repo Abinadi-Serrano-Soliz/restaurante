@@ -48,7 +48,8 @@ class UserController extends Controller implements HasMiddleware
             'telefono'=>'nullable|digits:8',
             'email' => 'nullable|email|unique:users,email',
             'password' => 'nullable|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*\s)(?!.*\*).*$/',
-            'role' => 'nullable'
+            'roles' => 'nullable|array',
+            'roles.*' => 'string|exists:roles,name',
         ],
         [
             'name.required'=>'el campo nombre es obligatorio',
@@ -71,8 +72,9 @@ class UserController extends Controller implements HasMiddleware
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
-        if (!empty($request->role)) {           //si el rol viene vacio no se registra el rol /puede ser nullo no pasa nada
-        $user->assignRole($request->role);
+            // Asignar roles al usuario recién creado
+        if ($request->has('roles')) {
+            $user->assignRole($request->roles);
         }
         
         return redirect()->route('users.index')->with('success', 'Usuario creado correctamente');
@@ -105,7 +107,8 @@ class UserController extends Controller implements HasMiddleware
                 Rule::unique('users', 'email')->ignore($user->id),
             ],
             'password' => 'nullable|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*\s)(?!.*\*).*$/',
-            'role' => 'nullable'
+            'roles' => 'nullable|array',
+            'roles.*' => 'string|exists:roles,name',
         ],
         [
             'ci.unique' => 'Este CI ya está registrado',
@@ -134,10 +137,10 @@ class UserController extends Controller implements HasMiddleware
         if ($request->password) {
             $user->update(['password' => bcrypt($request->password)]);
         }
+       // Sincronizar roles - si no hay roles, se pasa array vacío
+        $user->syncRoles($request->roles ?? []);
 
-        if (!empty($request->role)) {           //si el rol viene vacio no se registra el rol /puede ser nullo no pasa nada
-        $user->assignRole($request->role);
-        }
+        
 
 
         return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente');

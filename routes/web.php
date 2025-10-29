@@ -78,6 +78,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perfil', [PerfilController::class, 'edit'])->name('perfil.edit');
     Route::put('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
 
+    Route::get('/panel', [PerfilController::class, 'index'])->name('panel.index');
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         // Mostrar formulario y resultados
     Route::get('/reportes/pedidos', [ReporteController::class, 'reportePorFechas'])->name('reportespedidos');

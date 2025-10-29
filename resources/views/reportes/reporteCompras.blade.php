@@ -1,4 +1,4 @@
-@extends('layouts.mylayout')
+@extends('layouts.myLayout')
 @section('content')
 <div class="container-fluid px-4 py-4">
     {{-- Header con degradado --}}

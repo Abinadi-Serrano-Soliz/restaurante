@@ -64,13 +64,13 @@
                         </div>
                     </li>
                     </li>
-                    
+                     @can('panel de control.listar')
                         <li>
                             <a href="{{ route('dashboard') }}"><i class="fa fa-tachometer"></i><span class="nav-label">Panel
                                     de
                                     Control</span> </a>
                         </li>
-
+                    @endcan
                         @canany(['pedidos.listar','clientes.listar','repartidores.listar','menu.listar'])
                             <li>
                                 <a href="#"><i class="fa fa-solid fa-truck-ramp-box"></i> <span class="nav-label">Modulo de Pedido</span><span
