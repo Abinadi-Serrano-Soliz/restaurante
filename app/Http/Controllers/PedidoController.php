@@ -471,7 +471,7 @@ class PedidoController extends Controller implements HasMiddleware
         $pedido = Pedido::with(['menus.producto_almacenes'])->findOrFail($pago->id_pedido);
 
             // 🔹 Recuperar y actualizar el estado del repartidor
-    if ($pedido->id_repartidor) {
+    if ($pedido->id_repartidor !== null) {
         $repartidor = Repartidor::find($pedido->id_repartidor);
 
         if ($repartidor) {
@@ -482,12 +482,8 @@ class PedidoController extends Controller implements HasMiddleware
                 'repartidor_id' => $repartidor->id,
                 'nombre' => $repartidor->nombre ?? 'N/A'
             ]);
-        } else {
-            Log::warning('⚠️ No se encontró el repartidor con ID: ' . $pedido->id_repartidor);
-        }
-    } else {
-        Log::warning('⚠️ Pedido sin repartidor asignado');
-    }
+        } 
+    } 
 
 
         DB::beginTransaction();
@@ -616,6 +612,13 @@ foreach ($menuCantidades as $idMenu => $cantidadTotal) {
             $repartidor = \App\Models\Repartidor::find($pedido->id_repartidor);
             if ($repartidor) {
                 $repartidor->estado = 0;
+                $repartidor->save();
+            }
+        }
+        if ($pedido->estado == 0) {
+            $repartidor = \App\Models\Repartidor::find($pedido->id_repartidor);
+            if ($repartidor) {
+                $repartidor->estado = 1;
                 $repartidor->save();
             }
         }
